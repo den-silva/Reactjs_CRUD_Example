@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+import React from 'react';
+import UsuarioList from './pages/UsuarioList';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
+      {/* Cabeçalho da aplicação */}
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>NailsApp - Sistema de Clientes</h1>
+        {/* <p>Gerencie seus clientes de forma eficiente</p> */}
       </header>
+
+      {/* Área principal com a lista de clientes */}
+      <main className="App-main">
+        <UsuarioList />
+      </main>
+
+      {/* Rodapé */}
+      <footer className="App-footer">
+        <p>Sistema desenvolvido para NailsApp © {new Date().getFullYear()}</p>
+      </footer>
     </div>
   );
 }

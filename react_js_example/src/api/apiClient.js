@@ -37,7 +37,6 @@ apiClient.interceptors.response.use(
           break;
         case 401:
           console.error('Não autorizado');
-          // Redirecionar para login se necessário
           window.location.href = '/login';
           break;
         case 403:
@@ -68,103 +67,4 @@ apiClient.interceptors.response.use(
   }
 );
 
-// Serviço específico para Clientes
-const ClienteService = {
-  // GET: Listar todos os clientes
-  getAll: async () => {
-    try {
-      const response = await apiClient.get('/Clientes');
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // GET: Obter cliente por ID
-  getById: async (id) => {
-    try {
-      const response = await apiClient.get(`/Clientes/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // GET: Obter cliente por CPF
-  getByCpf: async (cpf) => {
-    try {
-      const response = await apiClient.get(`/Clientes/cpf/${cpf}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // POST: Criar novo cliente
-  create: async (clienteData) => {
-    try {
-      // Formatar data para o formato esperado pelo backend
-      const formattedData = {
-        ...clienteData,
-        dataNascimento: clienteData.dataNascimento ? 
-          new Date(clienteData.dataNascimento).toISOString().split('T')[0] : null
-      };
-      
-      const response = await apiClient.post('/Clientes', formattedData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // PUT: Atualizar cliente
-  update: async (id, clienteData) => {
-    try {
-      // Formatar data para o formato esperado pelo backend
-      const formattedData = {
-        ...clienteData,
-        dataNascimento: clienteData.dataNascimento ? 
-          new Date(clienteData.dataNascimento).toISOString().split('T')[0] : null
-      };
-      
-      const response = await apiClient.put(`/Clientes/${id}`, formattedData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // DELETE: Excluir cliente
-  delete: async (id) => {
-    try {
-      await apiClient.delete(`/Clientes/${id}`);
-      return true;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // PATCH: Atualizar status do cliente
-  updateStatus: async (id, status) => {
-    try {
-      const response = await apiClient.patch(`/Clientes/${id}/status`, { status });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // Buscar clientes com filtros (se implementado no backend)
-  search: async (filters) => {
-    try {
-      const response = await apiClient.get('/Clientes/search', { params: filters });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-};
-
-// Exportar tanto o apiClient quanto o serviço específico
-export { apiClient, ClienteService };
 export default apiClient;

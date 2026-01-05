@@ -1,4 +1,4 @@
-import apiClient from '../Api/apiClient';
+import apiClient from '../api/apiClient';
 
 class UsuarioService {
   // Buscar todos os clientes
@@ -26,7 +26,7 @@ class UsuarioService {
   // Criar novo cliente
   async createUsuario(usuario) {
     try {
-      // Formatar dados para enviar ao backend .NET
+      console.log('Dados do usuário a serem criados:', usuario);
       const clienteFormatado = {
         nome: usuario.nome || usuario.Nome,
         email: usuario.email || usuario.Email,
