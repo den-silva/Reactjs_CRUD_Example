@@ -74,23 +74,88 @@ function UsuarioList() {
     });
   };
 
-  const handleCriarCliente = async () => {
-    try {
-      const novoCliente = {
-        nome: 'Maria Silva',
-        email: 'maria@email.com',
-        cpf: '98765432100',
-        status: 'Ativo',
-        dataNascimento: '1985-05-15'
-      };
+//   const handleCriarCliente = async () => {
+//     try {
+//       const novoCliente = {
+//         nome: 'Maria Silva',
+//         email: 'maria@email.com',
+//         cpf: '98765432100',
+//         status: 'Ativo',
+//         dataNascimento: '1985-05-15'
+//       };
       
-      await usuarioService.createUsuario(novoCliente);
-      await carregarClientes();
-      alert('Cliente criado com sucesso!');
-    } catch (err) {
-      alert(`Erro: ${err.message || 'Não foi possível criar o cliente'}`);
-    }
+//       await usuarioService.createUsuario(novoCliente);
+//       await carregarClientes();
+//       alert('Cliente criado com sucesso!');
+//     } catch (err) {
+//       alert(`Erro: ${err.message || 'Não foi possível criar o cliente'}`);
+//     }
+//   };
+
+const handleCriarCliente = async () => {
+  try {
+    // Gerar dados fictícios dinamicamente
+    const novoCliente = gerarClienteFicticio();
+    
+    console.log('🆕 Criando cliente:', novoCliente);
+    
+    await usuarioService.createUsuario(novoCliente);
+    await carregarClientes();
+    alert(`Cliente "${novoCliente.nome}" criado com sucesso!`);
+  } catch (err) {
+    console.error('❌ Erro ao criar cliente:', err);
+    alert(`Erro: ${err.response?.data || err.message || 'Não foi possível criar o cliente'}`);
+  }
+};
+
+// Função auxiliar para gerar cliente fictício
+const gerarClienteFicticio = () => {
+  // Arrays de dados fictícios
+  const nomes = [
+    'Ana', 'Carlos', 'Fernanda', 'Ricardo', 'Juliana', 'Pedro', 'Amanda', 
+    'Roberto', 'Patrícia', 'Marcos', 'Mariana', 'Lucas', 'Camila', 'Rafael',
+    'Beatriz', 'Daniel', 'Isabela', 'Thiago', 'Larissa', 'Gabriel'
+  ];
+  
+  const sobrenomes = [
+    'Silva', 'Santos', 'Oliveira', 'Souza', 'Rodrigues', 'Ferreira', 'Almeida',
+    'Pereira', 'Costa', 'Carvalho', 'Gomes', 'Martins', 'Araújo', 'Melo',
+    'Ribeiro', 'Alves', 'Lima', 'Teixeira', 'Nunes', 'Rocha'
+  ];
+  
+  const dominios = ['gmail.com', 'outlook.com', 'yahoo.com', 'hotmail.com', 'empresa.com'];
+  
+  // Gerar nome aleatório
+  const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];
+  const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+  const nomeCompleto = `${nomeAleatorio} ${sobrenomeAleatorio}`;
+  
+  // Gerar email baseado no nome
+  const email = `${nomeAleatorio.toLowerCase()}.${sobrenomeAleatorio.toLowerCase()}@${dominios[Math.floor(Math.random() * dominios.length)]}`;
+  
+  // Gerar CPF único com timestamp
+  const timestamp = Date.now().toString().slice(-4);
+  const cpfBase = Math.floor(100000000 + Math.random() * 900000000).toString();
+  const cpf = cpfBase.slice(0, 7) + timestamp;
+  
+  // Gerar data de nascimento aleatória (entre 18 e 70 anos)
+  const anoAtual = new Date().getFullYear();
+  const anoNascimento = anoAtual - (18 + Math.floor(Math.random() * 52));
+  const mesNascimento = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+  const diaNascimento = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+  const dataNascimento = `${anoNascimento}-${mesNascimento}-${diaNascimento}`;
+  
+  // Status aleatório (70% Ativo, 30% Inativo)
+  const status = Math.random() < 0.7 ? 'Ativo' : 'Inativo';
+  
+  return {
+    nome: nomeCompleto,
+    email: email,
+    cpf: cpf,
+    status: status,
+    dataNascimento: dataNascimento
   };
+};
 
   const handleExcluir = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
